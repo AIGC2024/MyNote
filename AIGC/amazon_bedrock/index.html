@@ -1,0 +1,2007 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../../AWS/ai/1/">
+      
+      
+        <link rel="next" href="../../k8s/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.18">
+    
+    
+      
+        <title>Amazon Bedrock - My Notes</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.66ac8b77.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+  
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+  
+  <style>:root{--md-admonition-icon--note:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 13c.7 0 1.37.13 2 .35V9l-6-6H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h8.35c-.22-.63-.35-1.3-.35-2 0-3.31 2.69-6 6-6m-5-8.5 5.5 5.5H14V4.5m8.5 12.75L17.75 22 15 19l1.16-1.16 1.59 1.59 3.59-3.59 1.16 1.41Z"/></svg>');--md-admonition-icon--abstract:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.5 1.75v11.5c0 .138.112.25.25.25h3.17a.75.75 0 0 1 0 1.5H2.75A1.75 1.75 0 0 1 1 13.25V1.75C1 .784 1.784 0 2.75 0h8.5C12.216 0 13 .784 13 1.75v7.736a.75.75 0 0 1-1.5 0V1.75a.25.25 0 0 0-.25-.25h-8.5a.25.25 0 0 0-.25.25Zm13.274 9.537v-.001l-4.557 4.45a.75.75 0 0 1-1.055-.008l-1.943-1.95a.75.75 0 0 1 1.062-1.058l1.419 1.425 4.026-3.932a.75.75 0 1 1 1.048 1.074ZM4.75 4h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1 0-1.5ZM4 7.75A.75.75 0 0 1 4.75 7h2a.75.75 0 0 1 0 1.5h-2A.75.75 0 0 1 4 7.75Z"/></svg>');--md-admonition-icon--info:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"/></svg>');--md-admonition-icon--tip:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.499.75a.75.75 0 0 1 1.5 0v.996C5.9 2.903 6.793 3.65 7.662 4.376l.24.202c-.036-.694.055-1.422.426-2.163C9.1.873 10.794-.045 12.622.26 14.408.558 16 1.94 16 4.25c0 1.278-.954 2.575-2.44 2.734l.146.508.065.22c.203.701.412 1.455.476 2.226.142 1.707-.4 3.03-1.487 3.898C11.714 14.671 10.27 15 8.75 15h-6a.75.75 0 0 1 0-1.5h1.376a4.484 4.484 0 0 1-.563-1.191 3.835 3.835 0 0 1-.05-2.063 4.647 4.647 0 0 1-2.025-.293.75.75 0 0 1 .525-1.406c1.357.507 2.376-.006 2.698-.318l.009-.01a.747.747 0 0 1 1.06 0 .748.748 0 0 1-.012 1.074c-.912.92-.992 1.835-.768 2.586.221.74.745 1.337 1.196 1.621H8.75c1.343 0 2.398-.296 3.074-.836.635-.507 1.036-1.31.928-2.602-.05-.603-.216-1.224-.422-1.93l-.064-.221c-.12-.407-.246-.84-.353-1.29a2.425 2.425 0 0 1-.507-.441 3.075 3.075 0 0 1-.633-1.248.75.75 0 0 1 1.455-.364c.046.185.144.436.31.627.146.168.353.305.712.305.738 0 1.25-.615 1.25-1.25 0-1.47-.95-2.315-2.123-2.51-1.172-.196-2.227.387-2.706 1.345-.46.92-.27 1.774.019 3.062l.042.19a.884.884 0 0 1 .01.05c.348.443.666.949.94 1.553a.75.75 0 1 1-1.365.62c-.553-1.217-1.32-1.94-2.3-2.768L6.7 5.527c-.814-.68-1.75-1.462-2.692-2.619a3.737 3.737 0 0 0-1.023.88c-.406.495-.663 1.036-.722 1.508.116.122.306.21.591.239.388.038.797-.06 1.032-.19a.75.75 0 0 1 .728 1.31c-.515.287-1.23.439-1.906.373-.682-.067-1.473-.38-1.879-1.193L.75 5.677V5.5c0-.984.48-1.94 1.077-2.664.46-.559 1.05-1.055 1.673-1.353V.75Z"/></svg>');--md-admonition-icon--success:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"/></svg>');--md-admonition-icon--question:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.92 6.085h.001a.749.749 0 1 1-1.342-.67c.169-.339.436-.701.849-.977C6.845 4.16 7.369 4 8 4a2.756 2.756 0 0 1 1.637.525c.503.377.863.965.863 1.725 0 .448-.115.83-.329 1.15-.205.307-.47.513-.692.662-.109.072-.22.138-.313.195l-.006.004a6.24 6.24 0 0 0-.26.16.952.952 0 0 0-.276.245.75.75 0 0 1-1.248-.832c.184-.264.42-.489.692-.661.103-.067.207-.132.313-.195l.007-.004c.1-.061.182-.11.258-.161a.969.969 0 0 0 .277-.245C8.96 6.514 9 6.427 9 6.25a.612.612 0 0 0-.262-.525A1.27 1.27 0 0 0 8 5.5c-.369 0-.595.09-.74.187a1.01 1.01 0 0 0-.34.398ZM9 11a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"/></svg>');--md-admonition-icon--warning:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M6.457 1.047c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0 1 14.082 15H1.918a1.75 1.75 0 0 1-1.543-2.575Zm1.763.707a.25.25 0 0 0-.44 0L1.698 13.132a.25.25 0 0 0 .22.368h12.164a.25.25 0 0 0 .22-.368Zm.53 3.996v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 11a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"/></svg>');--md-admonition-icon--failure:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343h-.001a8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746Zm1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275ZM6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.749.749 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L6.94 8 4.97 6.03a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018Z"/></svg>');--md-admonition-icon--danger:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M9.504.43a1.516 1.516 0 0 1 2.437 1.713L10.415 5.5h2.123c1.57 0 2.346 1.909 1.22 3.004l-7.34 7.142a1.249 1.249 0 0 1-.871.354h-.302a1.25 1.25 0 0 1-1.157-1.723L5.633 10.5H3.462c-1.57 0-2.346-1.909-1.22-3.004L9.503.429Zm1.047 1.074L3.286 8.571A.25.25 0 0 0 3.462 9H6.75a.75.75 0 0 1 .694 1.034l-1.713 4.188 6.982-6.793A.25.25 0 0 0 12.538 7H9.25a.75.75 0 0 1-.683-1.06l2.008-4.418.003-.006a.036.036 0 0 0-.004-.009l-.006-.006-.008-.001c-.003 0-.006.002-.009.004Z"/></svg>');--md-admonition-icon--bug:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M4.72.22a.75.75 0 0 1 1.06 0l1 .999a3.488 3.488 0 0 1 2.441 0l.999-1a.748.748 0 0 1 1.265.332.75.75 0 0 1-.205.729l-.775.776c.616.63.995 1.493.995 2.444v.327c0 .1-.009.197-.025.292.408.14.764.392 1.029.722l1.968-.787a.75.75 0 0 1 .556 1.392L13 7.258V9h2.25a.75.75 0 0 1 0 1.5H13v.5c0 .409-.049.806-.141 1.186l2.17.868a.75.75 0 0 1-.557 1.392l-2.184-.873A4.997 4.997 0 0 1 8 16a4.997 4.997 0 0 1-4.288-2.427l-2.183.873a.75.75 0 0 1-.558-1.392l2.17-.868A5.036 5.036 0 0 1 3 11v-.5H.75a.75.75 0 0 1 0-1.5H3V7.258L.971 6.446a.75.75 0 0 1 .558-1.392l1.967.787c.265-.33.62-.583 1.03-.722a1.677 1.677 0 0 1-.026-.292V4.5c0-.951.38-1.814.995-2.444L4.72 1.28a.75.75 0 0 1 0-1.06Zm.53 6.28a.75.75 0 0 0-.75.75V11a3.5 3.5 0 1 0 7 0V7.25a.75.75 0 0 0-.75-.75ZM6.173 5h3.654A.172.172 0 0 0 10 4.827V4.5a2 2 0 1 0-4 0v.327c0 .096.077.173.173.173Z"/></svg>');--md-admonition-icon--example:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M5 5.782V2.5h-.25a.75.75 0 0 1 0-1.5h6.5a.75.75 0 0 1 0 1.5H11v3.282l3.666 5.76C15.619 13.04 14.543 15 12.767 15H3.233c-1.776 0-2.852-1.96-1.899-3.458Zm-2.4 6.565a.75.75 0 0 0 .633 1.153h9.534a.75.75 0 0 0 .633-1.153L12.225 10.5h-8.45ZM9.5 2.5h-3V6c0 .143-.04.283-.117.403L4.73 9h6.54L9.617 6.403A.746.746 0 0 1 9.5 6Z"/></svg>');--md-admonition-icon--quote:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M1.75 2.5h10.5a.75.75 0 0 1 0 1.5H1.75a.75.75 0 0 1 0-1.5Zm4 5h8.5a.75.75 0 0 1 0 1.5h-8.5a.75.75 0 0 1 0-1.5Zm0 5h8.5a.75.75 0 0 1 0 1.5h-8.5a.75.75 0 0 1 0-1.5ZM2.5 7.75v6a.75.75 0 0 1-1.5 0v-6a.75.75 0 0 1 1.5 0Z"/></svg>');}</style>
+
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+   <link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+    html.glightbox-open { overflow: initial; height: 100%; }
+    .gslide-title { margin-top: 0px; user-select: text; }
+    .gslide-desc { color: #666; user-select: text; }
+    .gslide-image img { background: white; }
+    .gscrollbar-fixer { padding-right: 15px; }
+    .gdesc-inner { font-size: 0.75rem; }
+    body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color);}
+    body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color);}
+    body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}</style> <script src="../../assets/javascripts/glightbox.min.js"></script></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#amazon-bedrock" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="My Notes" class="md-header__button md-logo" aria-label="My Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4c-1.92 0-3.5 1.58-3.5 3.5 0 .93.38 1.78 1 2.41-1.53 1-2.5 2.71-2.5 4.59 0 3.03 2.47 5.5 5.5 5.5 1.76 0 3.5-.46 5-1.34l-1-1.73c-1.22.7-2.6 1.07-4 1.07-1.94 0-3.5-1.55-3.5-3.5a3.49 3.49 0 0 1 2.59-3.38l5.21-1.4-.52-1.93L11.83 9c-.75-.1-1.33-.72-1.33-1.5 0-.84.66-1.5 1.5-1.5.26 0 .5.07.75.2l1-1.73C13.22 4.16 12.61 4 12 4Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            My Notes
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Amazon Bedrock
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9h-1.9M20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69m-9.15 3.96h2.3L12 9l-1.15 3.65Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="pink"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="indigo"  aria-label="Switch to Auto mode"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to Auto mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12c0-2.42-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7 0-.24-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91 1.61 0 2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08Z"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/squidfunk/mkdocs-material" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    squidfunk/mkdocs-material
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../.." class="md-tabs__link">
+          
+  
+    
+  
+  Home
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+    
+  
+  AIGC
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../k8s/" class="md-tabs__link">
+          
+  
+    
+  
+  Kubernetes
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../blog/" class="md-tabs__link">
+          
+  
+    
+  
+  Blog
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="My Notes" class="md-nav__button md-logo" aria-label="My Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4c-1.92 0-3.5 1.58-3.5 3.5 0 .93.38 1.78 1 2.41-1.53 1-2.5 2.71-2.5 4.59 0 3.03 2.47 5.5 5.5 5.5 1.76 0 3.5-.46 5-1.34l-1-1.73c-1.22.7-2.6 1.07-4 1.07-1.94 0-3.5-1.55-3.5-3.5a3.49 3.49 0 0 1 2.59-3.38l5.21-1.4-.52-1.93L11.83 9c-.75-.1-1.33-.72-1.33-1.5 0-.84.66-1.5 1.5-1.5.26 0 .5.07.75.2l1-1.73C13.22 4.16 12.61 4 12 4Z"/></svg>
+
+    </a>
+    My Notes
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/squidfunk/mkdocs-material" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    squidfunk/mkdocs-material
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_1" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../.." class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            Home
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    AIGC
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            AIGC
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../AWS/ai/1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ai
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Amazon Bedrock
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Amazon Bedrock
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      Agent:
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#claude-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Claude 3
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../k8s/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Kubernetes
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Kubernetes
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    User Guide
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            User Guide
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../k8s/note/chapter-1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.Kubernetes概述
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../k8s/note/chapter-2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.核心组件/附件
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../k8s/note/chapter-3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3. 集群部署
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../k8s/note/chapter-4/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    4. 入门命令
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../k8s/note/chapter-5/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    5. 配置清单使用
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../k8s/note/chapter-6/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    6. POD 配置清单
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../k8s/note/chapter-7/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    7. 控制器配置清单
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../k8s/note/chapter-8/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    8. Service 配置清单
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../k8s/note/chapter-9/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    9. ingress 控制器
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../k8s/note/chapter-10/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    10. POD 存储卷
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../k8s/note/chapter-11/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    11. 配置信息容器化
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../k8s/note/chapter-12/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    12. StatefulSet 控制器
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../k8s/note/chapter-13/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    13. 用户认证系统
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../k8s/note/chapter-14/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    14. 用户权限系统
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../k8s/note/chapter-15/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    15. dashboard
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../k8s/note/chapter-16/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    16. 网络通信
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../k8s/note/chapter-17/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    17. 调度策略
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../k8s/note/chapter-18/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    18. 高级调度设置
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../k8s/note/chapter-19/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    19. 容器资源限制
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../k8s/note/chapter-20/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    20. HeapSter监控（废弃中）
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../k8s/note/chapter-21/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    21. 新一代监控架构
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../k8s/note/chapter-22/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    22. K8S包管理器
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../k8s/note/chapter-23/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    23. ETCD详解
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../k8s/note/chapter-24/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    24. 国产容器管理平台KubeSphere实战排错
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    随笔
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            随笔
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../k8s/exp/1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Command Line
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../blog/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Blog
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Blog
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Archive
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            Archive
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../blog/archive/2024/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2024
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../blog/archive/2021/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2021
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Categories
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            Categories
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../blog/category/linux/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linux
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../blog/category/k8s/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    k8s
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      Agent:
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#claude-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Claude 3
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<blockquote>
+<p>Date:2024/4/8</p>
+</blockquote>
+<h1 id="amazon-bedrock">Amazon Bedrock</h1>
+<p>工作流：
+    <a class="glightbox" href="../bedrock1.jpg" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="workflow" src="../bedrock1.jpg" /></a></p>
+<h2 id="agent">Agent:</h2>
+<p><a class="glightbox" href="../bedrockAgent.jpg" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="" src="../bedrockAgent.jpg" /></a></p>
+<p><a class="glightbox" href="../bedrock2.jpg" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="workflow" src="../bedrock2.jpg" /></a></p>
+<h2 id="claude-3">Claude 3</h2>
+<ul>
+<li>支持200k token 超长上下文</li>
+<li>针对某些特殊场景，会开放支持1M token 的上下文窗口</li>
+<li>大海捞针（Needle in A haystack,NIAH）召回率表现优异</li>
+</ul>
+<p>Claude3三种规格中的各个优势：</p>
+<div class="language-text highlight"><pre><span></span><code>Opus --最强大
+sonnet --最均衡
+Haiku --最轻快
+</code></pre></div>
+<p>Bedrock概要介绍</p>
+<p>AWS Bedrock是一种基于人工智能的应用程序开发框架,旨在利用基础模型快速构建和扩展智能应用程序。它提供了对主流基础模型的统一API访问,并允许企业使用自身数据对模型进行微调,满足特定业务需求。Bedrock确保了数据隐私、安全性和合规性,支持构建智能代理执行复杂任务,并通过检索增强生成等技术增强模型能力。同时,它提供了经济高效的解决方案,无需管理基础设施。总的来说,AWS Bedrock为企业带来了AI驱动的应用开发新范式,加速了智能应用的构建和部署。 
+AWS Bedrock为企业提供了多种主流基础模型的选择,包括AI21 Labs的Jurassic-2、Anthropic的Claude系列、Cohere的Command和Embed、Mistral AI的Mistral等。这些模型涵盖了自然语言处理、计算机视觉、多模态等多个领域,可用于构建各种智能应用。除了第三方模型,Bedrock还集成了Meta的LLaMA模型、Stability AI的Stable Diffusion等知名开源模型。同时,亚马逊自身的模型如Amazon Titan也在内置选择之列,为企业客户提供更多可靠、优质的模型资源。通过提供丰富的基础模型选择。
+AWS Bedrock提供了一种无服务器的方式,通过统一API将各种基础模型集成。开发者只需通过该API发出请求,Bedrock便会基于请求内容选择合适的模型、完成模型推理并返回结果。在这个过程中,Bedrock会自动处理底层基础架构、模型部署、运行管理等复杂细节,开发者无需关注这些内部细节。同时,Bedrock支持个性化微调,允许企业使用自有数据对模型进行优化,满足特定业务需求。通过这种方式,Bedrock显著降低了AI应用开发的复杂性,使企业能够高效利用各种基础模型的能力,快速构建和交付智能应用。</p>
+<p>Bedrock/Claude3 核心优势</p>
+<p>Claude 3系列模型 在多项AI系统常用评估测试集中，包括本科级别专 家知识(MMLU)、研究生级别专家推 理(GPQA)、基础数学(GSM8K, MATH)，多语种数学(MGSM)，阅读 理解(RACE-H)，常识推理 (HellaSwag)，代码领域均取得领先业界的性能。其中Opus模型展现了接近人类水 平的理解和流畅度，在复杂任务上的表现领先同类模型。</p>
+<p>在价格、速度、效果三个方面，Claude 3系列在这三个维度上的表现,无论是追求极高智能水平的Opus版本,还是注重成本效益的Haiku版本,都能在速度、智能和成本之间达到理想的平衡,满足不同客户的差异化需求。在多模态能力上，相比GPT-3.5T在多模态能力上的缺失，,Claude 3各版本支持多模态功能,能够同时处理文本、图像等不同类型数据,拥有更广阔的应用场景。另一方面，从成本数据来看,Claude 3的每万Token输入和输出成本在同类产品中处于相对低廉的水平,尤其是Haiku版本,输入成本仅0.25美元/万Token,输出成本4-15美元/万Token,性价比极高。因此，Claude 3模型家族的定位是在智能水平、推理速度和成本之间寻求最佳平衡,并提供多模态支持和优秀的性价比,使其能够满足不同客户的差异化需求。</p>
+<p>Claude 3 Haiku版本的输入成本仅为每万Token 0.25美元,输出成本为1.25美元/万Token,相比同级别的gpt-3.5-turbo-0125模型的输入成本0.5美元/万Token和输出成本1.5美元/万Token,价格上具有近一倍的优势。即便是中高端的Claude 3 Sonnet版本,其输入成本为每万Token 3美元,而GPT-4 Turbo的输入成本为10美元/万Token,Claude 3 Sonnet的输入成本仅为GPT-4 Turbo的30%左右,价格优势明显。在输出成本方面,Claude 3 Sonnet为15美元/万Token,而GPT-4 Turbo为30美元/万Token,Claude 3 Sonnet的输出成本是GPT-4 Turbo的一半左右。</p>
+<p>Claude 3系列模型具备与其他领先模型相媲美的高级视觉识别能力，支持处理各种格式(JPEG, PNG, GIF, WebPage）多种类型类型（照片，图表，技术绘图等）的图片。修复了“过度拒绝”问题，面对可能触及到系统安全边界的问题时，Claude 3系列模型提升了理解程度，能够辨别真正的风险，提升了创造性的人物表现。最后，提升了准确性，在处理挑战性开放问题时，Claude 3准确性相比Claude2.1准确性明显提升，并且减少了错误答案。Claude 3系列模型，全部都支持200K token的上下文窗口，此外针对某些特殊场景，会开放支持1M token的上下文 窗口。大海捞针 （Needle In A Haystack, NIAH)召回率表现优异，甚至还能识别出测试本身的局限，比如发现某“目标”句子明显是后来人为添加进原始文本的。</p>
+<p>Bedrock 销售场景建议</p>
+<p>Bedrock与Claude 3提供了广泛的应用场景,涵盖了从视觉理解、图像处理、文本生成到对话交互等多个领域。其核心功能包括:视觉认知能力,如图像理解、目标检测、图像分割、图片翻译等,能够高效处理各种视觉内容。文本生成能力,可生成多种类型的文本,如摘要、故事、营销文案等,同时支持根据上下文生成相关内容。对话交互能力,能与用户进行自然语言对话,回答问题、提供建议,并支持个性化定制。此外,Bedrock还提供了RAG(Retrieval Augmented Generation)功能,将知识检索与生成相结合,输出更加准确、信息丰富的内容。代码辅助、数据处理、代理操作等能力,也为开发者提供了全方位的支持。以下是一些使用Bedrock的应用场景举例：
+1. 使用Bedrock构建RAG应用
+  1. 提升办公体验，智能写作助手
+Amazon Bedrock 构建的知识增强生成系统(RAG)为用户提供智能写作辅助,通过融合检索和问答、语法检查等功能,提升用户文档创作体验。该系统能够根据用户输入的关键词或主题,从知识库中检索相关内容,并将其智能整合到文档中,辅助用户撰写。同时,系统还具备语法纠错、上下文关联等增强功能,确保输出内容的连贯性和准确性。无论是生成长文本、摘要,还是回答问题,RAG系统都可以给出高质量的响应,大幅提高写作效率,为用户带来智能化、个性化的写作体验。
+  2. 基于 AI 与文档对话，重构阅读方式 – 智能 AI 阅读助手 APP
+亚马逊Bedrock构建的知识增强生成系统(RAG)融合了AI与文档处理,为用户提供智能AI阅读助手APP的功能。该系统能够智能阅读文献内容,批量文献总结,提高阅读效率。同时,它还支持针对文献实时交互对话,轻松获得智能解读,高效理解复杂内容。通过将知识检索与内容生成相结合,RAG系统为用户带来全新的文献阅读和理解体验,大幅提升学习研究效率,是基于AI与文档对话的重要创新应用。
+  3. 快速完成产品升级，提供企业级生成 AI 知识应用产品
+利用Amazon Bedrock的构建框架,企业可以快速定制和构建出适合自身需求的AI应用场景,例如基于知识库的问答系统、智能文档摘要和理解等。Amazon Bedrock在数据安全层面给予充分保障,保证了企业的数据和模型在其私有云环境中安全部署和运行,并与Amazon的知识服务和模型(如VPC)相集成,确保数据的私密性和安全性。另外,它还支持与Amazon OpenSearch Service无缝集成,实现对大规模文档的高效检索和理解,为企业内部提供优质的知识管理和共享平台。
+2. 使用Bedrock构建角色扮演应用
+  1. AI角色聊天，AI伴侣/AI聊天机器人
+可以定制个性化角色,从而提供更具吸引力和沉浸感的交互体验。该服务提供24/7全天候运营,用户可以随时与AI伙伴进行自然对话和互动。AI伙伴不仅具备游戏和娱乐功能,还能分析用户偏好,为用户推荐个性化的内容,如电影、书籍和电视节目等。通过Amazon Bedrock,开发者能够轻松构建引人入胜的AI伙伴应用,满足用户对于智能虚拟伙伴的需求。
+  2. 为用户提供情绪陪护
+通过Bedrock构建的角色扮演应用，,用户可以与AI助理进行自然地对话互动,涵盖高度定制化的设置、地点识别、语音识别等多种场景。这种AI对话系统累计服务了超过一万种用例,总共支持了7000万次人机对话。无论是应用于线上线下的产品销售,还是企业客户服务场景,Amazon Bedrock都能为AI助理赋能,提供高效、人性化的虚拟助理体验,是构建智能助手服务的强大底层技术支撑。
+3. 使用Bedrock构建文本分析类应用
+Amazon Bedrock能够对用户在游戏中的即时文字聊天进行分析,识别出存在于聊天内容中的色情、广告、骚扰等不当内容,并对这些不合规内容进行审查和过滤。同时,它也能识别多种语言和语境,确保在不同场景下都能准确理解用户交流的本质含义。 该服务利用自然语言处理和深度学习等技术,对聊天语料进行情感分析、主题识别等处理,为用户提供贴心周到的语料筛选和分析洞见。这种强大的文本分析能力,能够为游戏开发者营造安全、健康的在线游戏环境,提升用户体验,是Amazon Bedrock在游戏行业的重要应用场景之一。
+4. 使用Bedrock构建文本生成类应用
+Amazon Bedrock利用人工智能技术优化了亚马逊商品的文案内容,为顾客提供更精准、易懂的产品评论和描述信息。它通过分析15亿条用户评论和评级数据,自动生成具有高质量和准确度的评论摘要,为顾客呈现简洁有力的产品评价,提升了用户的购物体验。 该解决方案将人工智能与电商业务深度融合,通过智能生成文本的方式,不仅减轻了人工编写产品描述的工作负担,更能确保产品信息与客户真实需求高度匹配,帮助客户做出更明智的购买决策。
+5. 构建智能电商搜索推荐应用
+通过利用Bedrock提供模型的自然语言处理和机器学习能力,可以为用户提供个性化的商品推荐和智能搜索服务。该系统结合了用户历史数据、购物偏好和搜索记录等信息,利用Bedrock的模型,对用户需求进行分析和理解。系统会自动生成个性化商品推荐列表,并提供智能问答和搜索优化,帮助用户快速精准地找到想要的商品。</p>
+<p>Claude3优势场景
+从用户场景来看:
+翻译场景：例如视频字幕翻译、英文文档、说明书翻译（英翻中），通过pe设置好，几乎可以做到一字不差的翻译
+事实问答：历史事件汇总
+内容生成：小说续写、角色生成与扮演
+RAG场景：长文本+function calling
+代码辅助：代码生成、数据处理、代码优化和解读、生成单元测试等
+图像识别：给图片打标签、绘本打标签、动漫打标签+审核、生成商品详情/标签、商品图片理解，商品详情翻译润色、视频连续帧理解、给视频打标签
+图像理解：图片/视频连续帧理解问答、常识性数值理解、多图信息提取+总结、运维图表理解、架构图理解、课堂板书等一些手写的非结构化理解
+OCR识别：图片信息提取,用于下游任务,比如广告信息提取,不同格式订单信息整理
+图像问答：如普通事件座谈、医疗问答等
+企业内部：电商游戏等客户数评论/舆情分析、UGC内容审核、多途径翻译;图表估值提取/详细描述/概述;流程图识别/PDF文档识别/文档内图片识别
+智能客服：电商、To C场景应用、重直行业资讯类服务/对话机器人/智能设备
+营销：提高营运效率(锁货电商渠道平台商品推送、广告文案、社交媒体素材生成、邮件/评论自动回复)
+function calling：sonnet的能力结合价格，开辟 gpt 3.5和gpt 4之间的新赛道，是我们最好的武器,客户在使用 gpt 3.5 和 gpt 4 做function calling的过程中，如果遇到gpt 3.5效果不一定好，gpt 4又太贵的问题，可以引入sonnet。
+从行业来看:
+电商：智能客服、服装打标、广告文案、社交媒体素材生成、邮件/评论回复、售后服务知识库
+游戏：内容审核(文字+图片)、role play角色型应用、NPC对话、游戏行为分析(Text2SQL)
+广告&amp;媒体：广告创意、学霸翻译、实时广告调生成、智能广告分析师...
+物联网：智能家居、产品信息知识库/智能客服
+教育：AI老师、LLM解题
+跨行业：代码助手、运维助手、通用翻译(准确性和本地化效果好)、合同审查、法律案件问量化检索
+制造业：订单照片OCR识别,知识库</p>
+<p>Bedrock &amp; Claude 3 合作伙伴解决方案建议</p>
+<p>1、AI能力接入
+基于服务或API接入,帮助客户快速开通和使用Bedrock。目标客户包括希望简单使用AI功能的客户，或需要高单独使用FM功能的客户。技术要求和实施周期较低。
+2、AI能力平台
+基于能力接入,提供更多接入渠道,提供预定义提示词及定制PE服务。目标客户是有大量和复杂需求的客户，需要工作需要知识中心/能力支持的客户。技术要求和实施周期适中。
+3、RAG增强
+基于Bedrock KB或Agent能力,为客户快速构建智能知识库,增强客户现有业务能力。目标客户是有大量和复杂需求，需要工作需要知识中心/能力支持的客户。技术要求和实施周期较高。
+4、咨询及服务
+基于自身和借助AWS技术能力,提供AI实施、AI运维等增强服务。目标客户是有自建"智能大脑"需求，或需要通过远程高级技术支持的客户。技术要求和实施周期最高。</p>
+<p>Bedrock 账号开通流程</p>
+<p>对于申请Claude模型使用的用户，首先,用户需要在Bedrock平台的特定region内手动启用对应模型的访问权限。这一过程需要进入Model Access→Management→Model Management界面,并提交使用详情后保存设置。其次,对于Claude模型,用户第一次启用时需要先通过"submit use case details"提交模型使用详情,待审核通过后方可访问该模型。同时该过程可能需要一定时间,期间无法立即获得模型访问权限。最后,待模型访问权限设置完成后,符合条件的用户即可在模型列表中查看并使用所需的Claude模型。对于使用其他模型的用户，如AI21 Labs、Cohere、Meta、Mistral AI、Stability AI以及titan系列的模型,进入Model Access→Management界面，选中所需要的模型后，保存即可。</p>
+<p>根据Anthropic服务条款的约定,中国大陆及香港均不在其服务范围内,因此GCR客户需要满足如下合规要求。首先,开通账号作为公司主体,使用模型的业务场景以及服务的最终用户均为中国大陆及香港之外。同时,开通账号以及其关联的Payer账号(若有)的下游支付信息也需要设置为中国大陆及香港之外。</p>
+<p>具体包括主账号及Payer账号的账单地址、国家/地区代码、联系人地址及联系信息等,均需要设置在中国大陆及香港地区之外。最后,Anthropic会定期抽查Bedrock Claude账号的合规性,若GCR账号不符合上述要求则会存在被要求停服的风险。Bedrock后台会在模型订阅过程中检测当前账号的税务信息，若税务内容如” business legal address”或” country code”等存在中国大陆或香港信息，则无法审核通过。需要联系对应bd，或者pdm，协助客户检查账号的Tax Setting信息，填报满足条件的信息后提交订阅申请。</p>
+<p>以下列举了开通Bedrock模型权限常见的问题
+1、"this offer is not available to accept in this country",主要是由于客户所在国家/地区与Bedrock后台税务设置信息不符,包括业务法律地址、国家代码等,导致无法在中国大陆或香港地区开通相关服务或进行某些操作。
+2、"operation not allowed"客户为新账户且被后台标记为fraud，需要联系aws support解决。
+首先,对于"this offer is not available to accept in this country"和"operation not allowed"等报错,主要是由于客户所在国家/地区与Bedrock后台税务设置信息不符,包括业务法律地址、国家代码等,导致无法在中国大陆或香港地区开通相关服务或进行某些操作。
+3、对于"no identity based policy allows the aws-marketplace:ViewSubscriptions action"的报错,是由于客户的IAM权限设置问题,需要赋予Marketplace相关权限。
+其次,对于"no identity based policy allows the aws-marketplace:ViewSubscriptions action"的报错,是由于客户的IAM权限设置问题,需要赋予Marketplace相关权限。
+4、"AccessDeniedException: You don't have access to the model with the specified model"则表示客户账号缺乏访问指定模型的授权许可。
+5、如果客户无法在tax setting页面修改相关设置,可能是由于其账号已关联了Payer Account,并将Payer Account设为了主账号,从而无法直接修改tax setting信息。这种情况下需要先在Payer Account的tax setting页面进行修改,然后再同步回客户的本账号,并控制台页面进行修改。
+最后,如果客户无法在tax setting页面修改相关设置,可能是由于其账号已关联了Payer Account,并将Payer Account设为了主账号,从而无法直接修改tax setting信息。这种情况下需要先在Payer Account的tax setting页面进行修改,然后再同步回客户的本账号,并控制台页面进行修改。
+总的来说,上述报错主要涉及账号注册地、税务设置、权限配置等方面的问题,客户需要根据具体报错提示并结合账号实际情况进行相应的检查和调整。</p>
+<p>Bedrock 账单计费注意事项</p>
+<p>Bedrock提供了三种计费方式,以满足不同场景的需求
+1. On-demand方式适用于短期内偶尔使用的情况,根据输入的提示词(Prompt)和输出的token数量计费,灵活性高,但对于高并发或长期使用成本较高。
+2. Provisioned Throughput方式则采用预先购买模型单元(Model Unit)的形式,相对于On-demand有更高的容量保证,支持1个月或6个月的使用承诺期,适合中长期、较为稳定的使用场景,按小时计费,可实现成本优化。
+3. Fine tuning方式面向需要在基础模型上进行个性化调优的客户,按模型大小、训练token数量、模型存储以及模型推理三方面计费。其中模型微调token数量 = 模型微调数据集 token 总数 * 模型微调次数(Epoch)。
+如何购买 Provisioned throughput
+后台按照峰值 TPM 预留吞吐量，确保在流量高峰期间一致的客 户体验；客户需要 按小时计费，承诺期限为 1 个月或 6 个月，延长承诺期限会享受折扣。Bedrock 会自动配置购买的模型单元，并生成用于 PT 推理的唯 一 ARN ，客户只需要根据新的 ARN 来调用 API 接口，就可以实现资源独占；在同一个账户下，客户可以按需灵活地使用 OD 模式以及多个 PT 模式进行推理。</p>
+<p>销售话术参考</p>
+<p>Bedrock可以切入的痛点
+  - Bedrock同时提供AI21 Labs、Cohere、Claude、Meta、Mistral AI、Stability AI，以及亚马逊自己等多个公司不同的多个版本的模型，方便您去做不同模型的测试对比。
+- Bedrock Claude 输入token支持到100k，Claude3输入token支持到200K( OpenAI上的 GPT-4最高支持 32K，OpenAI上的 GPT-3.5最高支持16K）。
+- 意味着Claude模型可以一次性分析大约75000个单词，几乎是目前商业可用模型中“记性”最好的
+- 代表能够记住更多近期对话的内容
+- Claude3支持多模态，可以很好的识别文章中的图片、表格、架构图、流程图、手写体等非结构化数据，而gpt3.5不支持多模态。
+- Bedrock提供更高的SLA( 99.9% SLA vs. OpenAI no SLA)。
+- Bedrock可用来应对ChatGPT封号以及OpenAI API 不可用的时候，亚马逊提供多个接口可以提供自身服务的高可用。
+- Claude3 sonnet定位是介于GPT3.5和4之间的新选择，Sonnet在部分场景效果优于GPT4，成本却更低；就算测试结果打平的场景，也有价格优势可以考虑。
+- Bedrock提供的专业功包括Knowledge Base, Agent, model evaluation等除了基础模型之外的能力，方便客户快速构建端到端的生成式AI应用。
+- 合规角度，用户的数据在传输和保存时都是加密的，数据不会用于模型训练，也不会共享给 第三方的模型厂商，Bedrock 上 除了amazon 自己的titan模型，其余都是 第三方 模型，用户调用第三方模型的 ip，请求，aws 不会共享给第三方公司。
+- 大模型通常只是应用系统里的一个子模块，需要配合计算，数据库，数据分析等服务，Bedrock 可以和这些服务组合，形成端到端的应用。
+沟通步骤
+- 确定客户背景
+  1. 客户基本背景信息收集，针对Claude潜在用户，收集客户是否有海外主体（需要非HK）
+  2. 是否有使用GenAI的需求
+  3.  对GenAI的需求是对外提供还是对内部使用，分别的使用人数或者量级
+  4. 了解客户相关业务场景
+  5. 对GenAI的需求是文字生成还是图像生成
+  6. 客户的技术团队构成
+  7. 客户的角色：buyer 还是builder或者Model consumer / Model tuner
+  8. 客户对模型评价标准：速度、性能还是回答的准确性
+- 确定客户现状
+是否使用过大模型、是否接触过genai相关产品、是否听说过或者使用过Claude2/3、是否在使用其他平台的GenAI相关产品、目前使用大模型的方式（api调用还是说在第三方model provider平台上使用）、使用频率以及月度成本、是否有与代理商签约，目前有什么痛点（可从OpenAI封号、SLA、成本、输入token影响、模型拒答等方面切入）。
+- 对Bedrock的想法
+是否考虑使用Bedrock、有什么感兴趣的模型、是基于作为gpt的backup还是什么其他的考量。
+- 假如客户已有GENAI使用模型场景，为什么要选择aws的Claude3？（或者说为什么客户要选择Claude而不是gpt或者Gemini）
+  1. 对于GPT或Gemini客户，Claude3有三种版本可供用户选择，用户可根据场景需求和预算选择最适合的模型
+* Claude 3 Haiku 比 GPT 3.5T 更快、更便宜、更智能，且支持多模态—对于目前使用GPT3.5客户来说，这绝对是一个更好的选择。（示例场景：chatbot；快速低成本的翻译；内容审核；提取文本和图像中的数据等等）
+* Claude 3 Sonnet 比 GPT-4T 便宜，智能程度相当，速度不相上下，在某些使用情况下还会更快。它的价值更高，准确度和可靠性也更高。Sonnet 在基准测试中的得分高于 Gemini 1.0 Pro。（示例场景：分析企业知识，获取数据洞察；预测金融和市场模型；个性化客户分析营销；提高日常生产力等等）
+* Claude 3 Opus 比 GPT-4T 或 Gemini Ultra 更智能，在许多用于评估这些型号性能的基准测试中都处于领先地位。使用 GPT-4T 在人工智能前沿创造新体验的客户应迁移到 Claude 3 Opus。（示例场景：复杂任务自动化；文献解析综述；解决复杂问题等等）
+* Bedrock可以用来应对ChatGPT封号以及OpenAI API 不可用的时候，多个接口可以提供自身服务的高可用。
+  2. 对于老版的Claude用户，都应该选择升级到Claude3
+* 如果用户正在使用Claude 2.0 或 Claude 2.1 —— Claude 3 Sonnet 比 Claude 2.1 更快、更智能、更便宜
+* 如果用户正在使用Claude Instant 1.2 —— Claude 3 Haiku 比 Claude Instant 1.2 更快、更智能、更便宜，我们建议在 Claude 3 Haiku 发布时升级
+* Claude3修复了“过度拒绝”的问题，现在的Claude3在面对系统安全边界上的问题时，能够更精确地辨别风险，降低拒绝回答的可能
+  3. 相比直接使用Anthropic官网
+* Claude支持按region部署，客户的数据不会分享给Anthropic，也不会用于模型训练，在数据合规性上更有保障.
+* 如果您需要构建生成式AI，作为端到端应用，使用Bedrock调用Claude能十分方便的与现有云服务集成
+  4. Token优势
+Claude3全系支持200k token上下文，特殊场景可支持1M token
+  5. 多模态优势
+ Claude3的多模态能力能够处理多种格式（JPEG、PNG、GIF、Webp）和多种类型（照片，图表，技术绘图、架构图、运维图、非结构化数据如板书、手写体等）的图片，并且能够从图片中获得理解，帮助拓展用户的使用场景.
+  6. Claude 3在Bedrock与GCP上的对比
+GCP中请求链更长,由于目前还是Private Preview阶段，很容易被拒绝
+模型迁移到Claude3会涉及哪些工作量
+- 从Claude instance/2迁移到Claude 3的方式
+  1. 修改代码调用中的model ID.
+  2. Claude3  API call从Text Completions API 转为 Messages API，升级需要修改一下对话格式，有工具进行转换. 
+  3. Claude3 更智能，可以适当更改部分prompt，减少token消耗.
+- 从Other 模型迁移到 Claude3
+  1. 端到端应用中，涉及到服务器，数据库等，但是无论使用何种模型，都不影响这部分资源，无需迁移。但是出于网络延迟等性能考量，将服务器和数据存储，计算等应用都部署在AWS，网络延迟能低一些，且服务之间的集成更方便.
+  2. 部分PE调整，Claude3更新以后PE对用户更加友好，调整量也变小.
+  3. 代码API调整，Claude3同样使用Messages API，API调用调整更小.
+- 认真倾听客户关键词，例如：
+文本生成/图像生成/识别/超分/Bedrock/role play / character / 情感陪伴 / gpt / chatgpt / 文生文 /图生图/ Claude / 聊天 / 对话 / chatbot / 多模态 / GenAI / OpenAI/数字人/智能作曲/等，这些词是不错的表明GenAI商机的存在.</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var tab,labels=set.querySelector(".tabbed-labels");for(tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../../AWS/ai/1/" class="md-footer__link md-footer__link--prev" aria-label="Previous: ai">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                ai
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../../k8s/" class="md-footer__link md-footer__link--next" aria-label="Next: Kubernetes Recap">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Kubernetes Recap
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2016 - 2024 Martin Donath – <a href="#__consent">Change cookie settings</a>
+
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+      
+    
+    
+    
+      
+      
+    
+    <a href="https://fosstodon.org/@squidfunk" target="_blank" rel="noopener me" title="fosstodon.org" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M433 179.11c0-97.2-63.71-125.7-63.71-125.7-62.52-28.7-228.56-28.4-290.48 0 0 0-63.72 28.5-63.72 125.7 0 115.7-6.6 259.4 105.63 289.1 40.51 10.7 75.32 13 103.33 11.4 50.81-2.8 79.32-18.1 79.32-18.1l-1.7-36.9s-36.31 11.4-77.12 10.1c-40.41-1.4-83-4.4-89.63-54a102.54 102.54 0 0 1-.9-13.9c85.63 20.9 158.65 9.1 178.75 6.7 56.12-6.7 105-41.3 111.23-72.9 9.8-49.8 9-121.5 9-121.5zm-75.12 125.2h-46.63v-114.2c0-49.7-64-51.6-64 6.9v62.5h-46.33V197c0-58.5-64-56.6-64-6.9v114.2H90.19c0-122.1-5.2-147.9 18.41-175 25.9-28.9 79.82-30.8 103.83 6.1l11.6 19.5 11.6-19.5c24.11-37.1 78.12-34.8 103.83-6.1 23.71 27.3 18.4 53 18.4 175z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.footer", "content.tooltips", "announce.dismiss", "content.code.copy", "search.suggest", "search.share", "navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.instant.preview", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.expand", "navigation.path", "navigation.indexes", "navigation.top", null, "toc.follow", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.3220b9d7.min.js"></script>
+      
+    
+  <script>document$.subscribe(() => {const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});})</script></body>
+</html>
